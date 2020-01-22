@@ -1,12 +1,15 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-class Screen extends React.Component {
+const Screen = ({text, style}) => {
+    return (
+        <input type="text" className={style} defaultValue={text}/>
+    )
+}
 
-    render() {
-        return (
-            <input type="text" className={this.props.screenStyle} value={this.props.text}/>
-        )
-    }
+Screen.propTypes = {
+    text: PropTypes.string.isRequired,
+    style: PropTypes.string.isRequired,
 }
 
 export default Screen

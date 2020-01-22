@@ -1,101 +1,58 @@
 import React from 'react'
-import TextButton from './TextButton'
+import ActionButton from './ActionButton'
 import Screen from './Screen'
 import '../css/App.css';
-import ActionButton from './ActionButton';
+import { connect } from 'react-redux'
+import { clear } from '../actions'
+import { concatNumber } from '../actions'
+import { setOperation } from '../actions'
+import { performOperation } from '../actions'
 
 class Calculator extends React.Component {
-    state = {
-        inputText: "",
-        firstNumber: "",
-        operation: ""
-    }
-
-    setNumber = (number) => {
-         const text = this.state.inputText
-         this.setState({inputText: text+number})
-    }
-
-    setOperation = (symbol) => {
-        const currentOperation = this.state.operation
-        if (currentOperation) {
-            this.getResult()
-            this.setState({
-                operation: symbol
-            })
-        } else {
-            const text = this.state.inputText ? this.state.inputText : this.state.firstNumber
-            this.setState({
-                inputText: "",
-                firstNumber: text,
-                operation: symbol
-            })
-        } 
-   }
-
-    clearText = () => {
-        this.setState({
-            inputText: "",
-            firstNumber: "",
-            operation:""})
-    }
-
-    getResult = () => {
-        var result = 0
-        var firstNumber = parseFloat(this.state.firstNumber)
-        var secondNumber = parseFloat(this.state.inputText)
-        switch(this.state.operation) {
-            case "/":
-                result = firstNumber/secondNumber
-                break
-            case "*":
-                result = firstNumber*secondNumber
-                break
-            case "+":
-                result = firstNumber+secondNumber
-                break
-            case "-":
-                result = firstNumber-secondNumber
-                break
-            
-        }
-        this.setState({
-            inputText: "",
-            firstNumber:result,
-            operation: ""
-        })
-    }
 
     render() {
         return (
             <div className="grid-container">
-                <Screen key="screen" screenStyle="display" text= {this.state.inputText ? this.state.inputText : this.state.firstNumber} />
+                <Screen key="screen" style="display" text= {this.props.operations.inputText ? this.props.operations.inputText: this.props.operations.firstNumber} />
                 
-                <ActionButton key="clear" buttonText="Clear" buttonStyle="button symbol delete" actionEvent={this.clearText}/>
-                <TextButton key="/" buttonText="/" buttonStyle="button symbol" actionEvent={this.setOperation}/>
-
-                <TextButton key="7" buttonText="7" buttonStyle="button number" actionEvent={this.setNumber}/>
-                <TextButton key="8" buttonText="8" buttonStyle="button number" actionEvent={this.setNumber}/>    
-                <TextButton key="9" buttonText="9" buttonStyle="button number" actionEvent={this.setNumber}/>
-                <TextButton key="*" buttonText="*" buttonStyle="button symbol" actionEvent={this.setOperation}/>    
+                <ActionButton text="Clear" style="button symbol delete" onClick={() => this.props.clear()}/>
+                <ActionButton text="/" style="button symbol" onClick={() => this.props.setOperation("/")}/>
+    
+                <ActionButton text="7" style="button number" onClick={() => this.props.concatNumber(7)}/>
+                <ActionButton text="8" style="button number" onClick={() => this.props.concatNumber(8)}/>    
+                <ActionButton text="9" style="button number" onClick={() => this.props.concatNumber(9)}/>
+                <ActionButton text="*" style="button symbol" onClick={() => this.props.setOperation("*")}/>    
                 
-                <TextButton key="4" buttonText="4" buttonStyle="button number" actionEvent={this.setNumber}/>
-                <TextButton key="5" buttonText="5" buttonStyle="button number" actionEvent={this.setNumber}/>
-                <TextButton key="6" buttonText="6" buttonStyle="button number" actionEvent={this.setNumber}/>   
-                <TextButton key="+" buttonText="+" buttonStyle="button symbol" actionEvent={this.setOperation}/>         
+                <ActionButton text="4" style="button number" onClick={() => this.props.concatNumber(4)}/>
+                <ActionButton text="5" style="button number" onClick={() => this.props.concatNumber(5)}/>
+                <ActionButton text="6" style="button number" onClick={() => this.props.concatNumber(6)}/>   
+                <ActionButton text="+" style="button symbol" onClick={() => this.props.setOperation("+")}/>         
                 
-                <TextButton key="1" buttonText="1" buttonStyle="button number" actionEvent={this.setNumber}/>
-                <TextButton key="2" buttonText="2" buttonStyle="button number" actionEvent={this.setNumber}/>
-                <TextButton key="3" buttonText="3" buttonStyle="button number" actionEvent={this.setNumber}/>
-                <TextButton key="-" buttonText="-" buttonStyle="button symbol" actionEvent={this.setOperation}/>
+                <ActionButton text="1" style="button number" onClick={() => this.props.concatNumber(1)}/>
+                <ActionButton text="2" style="button number" onClick={() => this.props.concatNumber(2)}/>
+                <ActionButton text="3" style="button number" onClick={() => this.props.concatNumber(3)}/>
+                <ActionButton text="-" style="button symbol" onClick={() => this.props.setOperation("-")}/>
             
-
-                <TextButton key="0" buttonText="0" buttonStyle="button number zero" actionEvent={this.setNumber}/>
-                <TextButton key="." buttonText="." buttonStyle="button number" actionEvent={this.setNumber}/>
-                <ActionButton key="=" buttonText="=" buttonStyle="button symbol" actionEvent={this.getResult}/>                
+    
+                <ActionButton text="0" style="button number zero" onClick={() => this.props.concatNumber(0)}/>
+                <ActionButton text="." style="button number" onClick={() => this.props.concatNumber(".")}/>
+                <ActionButton text="=" style="button symbol" onClick={() => this.props.performOperation()}/>                
             </div>
         )
     }
 }
 
-export default Calculator
+function mapStateToProps(state) {
+    return state
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+      clear: () => dispatch(clear()),
+      concatNumber: (number) => dispatch(concatNumber(number)),
+      setOperation: (operation) => dispatch(setOperation(operation)),
+      performOperation: () => dispatch(performOperation())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calculator)
