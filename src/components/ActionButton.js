@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 
 const ActionButton = ({ onClick, text, style}) => {
     return(
-        <button 
+        <button
             onClick= {onClick}
             className={style}
-            value={text}> 
-                {text} 
+            value={text}>
+                {text}
         </button>
     )
 }
