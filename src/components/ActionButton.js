@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ActionButton = ({ onClick, text, style}) => {
+const ActionButton = ({ onClick, text, buttonStyle}) => {
     return(
         <button
             onClick= {onClick}
-            className={style}
+            className={buttonStyle}
             value={text}>
                 {text}
         </button>
@@ -15,7 +15,7 @@ const ActionButton = ({ onClick, text, style}) => {
 ActionButton.propTypes = {
     onClick: PropTypes.func.isRequired,
     text: PropTypes.string.isRequired,
-    style: PropTypes.string.isRequired,
+    buttonStyle: PropTypes.string.isRequired,
 }
 
 export default ActionButton

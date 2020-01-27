@@ -2,55 +2,41 @@ import React from 'react'
 import ActionButton from './ActionButton'
 import Screen from './Screen'
 import '../css/App.css';
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { clear } from '../actions'
 import { concatNumber } from '../actions'
 import { setOperation } from '../actions'
 import { performOperation } from '../actions'
 
-class Calculator extends React.Component {
-    render() {
-        return (
-            <div className="grid-container">
-                <Screen key="screen" style="display" text= {this.props.operations.inputText ? this.props.operations.inputText: this.props.operations.firstNumber} />
+const Calculator = () => {
+    const state = useSelector(state => (state.operations), shallowEqual)
+    const dispatch = useDispatch()
+    return (
+        <div className="grid-container">
+            <Screen key="screen" screenStyle="display" text= {state.inputText ? state.inputText: state.firstNumber} />
 
-                <ActionButton text="Clear" style="button symbol delete" onClick={() => this.props.clear()}/>
-                <ActionButton text="/" style="button symbol" onClick={() => this.props.setOperation("/")}/>
+            <ActionButton text="Clear" buttonStyle="button symbol delete" onClick={() => dispatch(clear())}/>
+            <ActionButton text="/" buttonStyle="button symbol" onClick={() => dispatch(setOperation("/"))}/>
 
-                <ActionButton text="7" style="button number" onClick={() => this.props.concatNumber(7)}/>
-                <ActionButton text="8" style="button number" onClick={() => this.props.concatNumber(8)}/>
-                <ActionButton text="9" style="button number" onClick={() => this.props.concatNumber(9)}/>
-                <ActionButton text="*" style="button symbol" onClick={() => this.props.setOperation("*")}/>
+            <ActionButton text="7" buttonStyle="button number" onClick={() => dispatch(concatNumber(7))}/>
+            <ActionButton text="8" buttonStyle="button number" onClick={() => dispatch(concatNumber(8))}/>
+            <ActionButton text="9" buttonStyle="button number" onClick={() => dispatch(concatNumber(9))}/>
+            <ActionButton text="*" buttonStyle="button symbol" onClick={() => dispatch(setOperation("*"))}/>
 
-                <ActionButton text="4" style="button number" onClick={() => this.props.concatNumber(4)}/>
-                <ActionButton text="5" style="button number" onClick={() => this.props.concatNumber(5)}/>
-                <ActionButton text="6" style="button number" onClick={() => this.props.concatNumber(6)}/>
-                <ActionButton text="+" style="button symbol" onClick={() => this.props.setOperation("+")}/>
+            <ActionButton text="4" buttonStyle="button number" onClick={() => dispatch(concatNumber(4))}/>
+            <ActionButton text="5" buttonStyle="button number" onClick={() => dispatch(concatNumber(5))}/>
+            <ActionButton text="6" buttonStyle="button number" onClick={() => dispatch(concatNumber(6))}/>
+            <ActionButton text="+" buttonStyle="button symbol" onClick={() => dispatch(setOperation("+"))}/>
 
-                <ActionButton text="1" style="button number" onClick={() => this.props.concatNumber(1)}/>
-                <ActionButton text="2" style="button number" onClick={() => this.props.concatNumber(2)}/>
-                <ActionButton text="3" style="button number" onClick={() => this.props.concatNumber(3)}/>
-                <ActionButton text="-" style="button symbol" onClick={() => this.props.setOperation("-")}/>
+            <ActionButton text="1" buttonStyle="button number" onClick={() => dispatch(concatNumber(1))}/>
+            <ActionButton text="2" buttonStyle="button number" onClick={() => dispatch(concatNumber(2))}/>
+            <ActionButton text="3" buttonStyle="button number" onClick={() => dispatch(concatNumber(3))}/>
+            <ActionButton text="-" buttonStyle="button symbol" onClick={() => dispatch(setOperation("-"))}/>
 
-                <ActionButton text="0" style="button number zero" onClick={() => this.props.concatNumber(0)}/>
-                <ActionButton text="." style="button number" onClick={() => this.props.concatNumber(".")}/>
-                <ActionButton text="=" style="button symbol" onClick={() => this.props.performOperation()}/>
-            </div>
-        )
-    }
+            <ActionButton text="0" buttonStyle="button number zero" onClick={() => dispatch(concatNumber(0))}/>
+            <ActionButton text="." buttonStyle="button number" onClick={() => dispatch(concatNumber("."))}/>
+            <ActionButton text="=" buttonStyle="button symbol" onClick={() => dispatch(performOperation())}/>
+        </div>
+    )
 }
-
-function mapStateToProps(state) {
-    return state
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-      clear: () => dispatch(clear()),
-      concatNumber: (number) => dispatch(concatNumber(number)),
-      setOperation: (operation) => dispatch(setOperation(operation)),
-      performOperation: () => dispatch(performOperation())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Calculator)
+export default Calculator

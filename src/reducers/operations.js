@@ -12,7 +12,7 @@ const operations = (state = initialState, action) => {
             } else {
                 return {...state,
                     inputText: "",
-                    firstNumber: state.inputText ? state.inputText : state.firstNumber ,
+                    firstNumber: state.inputText ? state.inputText : state.firstNumber,
                     operation: action.operation}
             }
         case 'CLEAR':
@@ -46,21 +46,41 @@ const getResult = (operation, firstNumber, secondNumber) => {
     var result = 0
     switch (operation) {
         case '/':
-            result = firstNumber / secondNumber
+            result = divide(firstNumber, secondNumber)
             break
         case '*':
-            result = firstNumber * secondNumber
+            result = multiply(firstNumber, secondNumber)
             break
         case '+':
-            result = firstNumber + secondNumber
+            result = addition(firstNumber, secondNumber)
             break
         case '-':
-            result = firstNumber - secondNumber
+            result = substraction(firstNumber, secondNumber)
             break
         default:
             result = 0
     }
-    return result
+    if(result % 1 !== 0) {
+        return result.toFixed(2)
+    } else {
+        return result
+    }
+}
+
+const divide = (firstNumber, secondNumber) => {
+    return firstNumber / secondNumber
+}
+
+const multiply = (firstNumber, secondNumber) => {
+    return firstNumber * secondNumber
+}
+
+const addition = (firstNumber, secondNumber) => {
+    return firstNumber + secondNumber
+}
+
+const substraction = (firstNumber, secondNumber) => {
+    return firstNumber - secondNumber
 }
 
 export default operations
